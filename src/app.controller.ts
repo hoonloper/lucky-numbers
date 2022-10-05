@@ -7,7 +7,7 @@ export class AppController {
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  getNewLotteryNumbers() {
-    return this.appService.getNewLotteryNumbers();
+  async getNewLotteryNumbers() {
+    return await this.appService.getNewLotteryNumbers();
   }
 }
