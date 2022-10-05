@@ -1,7 +1,7 @@
-i, dan = 0, 0
+import random
 
-dan = 9
+lotto = [i for i in range(1, 46)]
 
-for i in range(9, 0, -1) :
-    print("%d X %d = %2d" % (dan, i, dan * i))
-    
+random.shuffle(lotto)
+
+print(sorted(lotto[0:6]))
