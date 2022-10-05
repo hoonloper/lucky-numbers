@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
+import { LottoEntity } from './entity/lottos.entity';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @HttpCode(HttpStatus.OK)
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  async getNewLotteryNumbers(): Promise<LottoEntity> {
+    return await this.appService.getNewLotteryNumbers();
   }
 }
