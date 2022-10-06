@@ -15,30 +15,24 @@ export class AppService {
     private readonly lottoModel: Repository<LottoEntity>,
   ) {}
 
-  async getNewLotteryNumbers(): Promise<LottoEntity> {
-    const pythonLotto: ChildProcess.ChildProcessWithoutNullStreams =
-      ChildProcess.spawn('python3', ['test.py']);
+  getNewLotteryNumbers() {
+    return new Promise((resolve, reject) => {
+      const pythonLotto: ChildProcess.ChildProcessWithoutNullStreams =
+        ChildProcess.spawn('python3', ['lotto.py']);
 
-    pythonLotto.stdout.on('data', async (lottoNumbers: any) => {
-      const { raw } = await this.saveLottoNumbers(JSON.parse(lottoNumbers));
+      pythonLotto.stdout.on('data', async (lottoNumbers: any) => {
+        resolve(this.saveLottoNumbers(JSON.parse(lottoNumbers)));
+      });
 
-      if (!raw.affectedRows) {
-        throw new BadGatewayException(
-          '로또 번호가 정상적으로 저장되지 않았습니다.',
-        );
-      }
+      pythonLotto.stderr.on('data', (err) => {
+        reject(err.toString());
+      });
     });
-
-    pythonLotto.stderr.on('data', (err) => {
-      console.error(err.toString());
-    });
-
-    return await this.getLatestLotteryNumbers();
   }
 
-  saveLottoNumbers(numbers: any): Promise<InsertResult> {
+  saveLottoNumbers(numbers: any): void {
     try {
-      return this.lottoModel
+      this.lottoModel
         .createQueryBuilder()
         .insert()
         .into(LottoEntity)
@@ -77,3 +71,9 @@ export class AppService {
     }
   }
 }
+
+// if (!raw.affectedRows) {
+//   throw new BadGatewayException(
+//     '로또 번호가 정상적으로 저장되지 않았습니다.',
+//   );
+// }
