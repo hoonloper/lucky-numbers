@@ -10,6 +10,6 @@ COPY ./tsconfig.json /lucky-numbers
 
 RUN npm ci
 RUN npm i -g @nestjs/cli@9.0.0
-RUN npm build
+RUN npm run build
 
 CMD ["npm", "run", "start:prod"]
