@@ -9,6 +9,8 @@ export class AppController {
   @HttpCode(HttpStatus.OK)
   @Get()
   async getNewLotteryNumbers(): Promise<LottoEntity> {
-    return await this.appService.getNewLotteryNumbers();
+    await this.appService.getNewLotteryNumbers();
+
+    return this.appService.getLatestLotteryNumbers();
   }
 }
