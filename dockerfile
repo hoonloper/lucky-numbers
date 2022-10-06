@@ -1,15 +1,14 @@
 FROM node:16.17.0
 
-WORKDIR /lucky-numbers
+WORKDIR /lotto
 
 COPY ./ .
 
-COPY ./package.json /lucky-numbers
-COPY ./package-lock.json /lucky-numbers
-COPY ./tsconfig.json /lucky-numbers
+COPY ./package.json /lotto
+COPY ./package-lock.json /lotto
+COPY ./tsconfig.json /lotto
 
 RUN npm ci
 RUN npm i -g @nestjs/cli@9.0.0
-RUN npm run build
 
 CMD ["npm", "run", "start:prod"]
